@@ -14,9 +14,9 @@ The global coral atlas project is a collaboration between a number of organisati
 Scripts in `/accuracy_resample` aim to supplement traditional accuracy metrics with confidence intervals and confidence maps based on resampling techniques.  
 Early stages, only the .dbf data is there at the moment - the rest of the shapefile data needed to project the data into space will be absent until further into the project.  It's there so you can determine the data structure needed and then run on other data.  
   
-A basis for the resampling methods can be found in the following paper and repo.  
-	* [Lyons, M. B., Keith, D. A., Phinn, S. R., Mason, T. J., & Elith, J. (2018). A comparison of resampling methods for remote sensing classification and accuracy assessment. Remote Sensing of Environment, 208, 145-153.](https://doi.org/10.1016/j.rse.2018.02.026)  
-	* https://github.com/mitchest/rs-accuracy-variance  
+A basis for the resampling methods can be found in the following paper and repo:
+Lyons, M. B., Keith, D. A., Phinn, S. R., Mason, T. J., & Elith, J. (2018). A comparison of resampling methods for remote sensing classification and accuracy assessment. Remote Sensing of Environment, 208, 145-153.  
+https://github.com/mitchest/rs-accuracy-variance  
 
 ### Variable importance
 Just a stub - will eventually be used to decide on relative importance of mapping variables
