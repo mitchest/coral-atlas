@@ -34,3 +34,12 @@ vignettes/*.pdf
 
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
+accuracy_resample/mvp_hawaii_confidence/
+accuracy_resample/mvp_heron_confidence/
+accuracy_resample/mvp_karimunjawa_confidence/
+accuracy_resample/mvp_lighthouse_confidence/
+accuracy_resample/mvp_moorea_confidence/
+accuracy_resample/Heron_Benthic_int_ML.xlsx
+variable_importance/cairns-cook_geomorphic_variable-plot.pdf
+accuracy_resample/Heron_Benthic_int.csv
+variable_importance/cairns-cook_geomorphic_object_sample.csv
