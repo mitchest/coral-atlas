@@ -10,6 +10,10 @@ source("resampled_accuracy_functions.R")
 
 # load and prep data ------------------------------------------------------
 
+# the input shapefile should be point or polygons that represent a class (so should have a class name column)
+# the other columns of the attributes should be predictor values for those points/polys (i.e. image data values, other predictors like depth slope in this case)
+# the names of these predictors are hard coded into the modelling code in resampled_accuracy_functions.R
+
 ## HERON
 heron_benthic <- read_dbf(path = "mvp_shapefiles/mvp_heron_confidence_benthic.dbf", simplify_classes = T)
 heron_geomorphic <- read_dbf("mvp_shapefiles/mvp_heron_confidence_geomorphic.dbf", simplify_classes = T)
