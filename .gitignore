@@ -44,3 +44,5 @@ variable_importance/cairns-cook_geomorphic_object_sample.csv
 *.shp
 *.shx
 survey_photo_rename/test/
+*.xlsx
+variable_importance/variable_importance_report.png
