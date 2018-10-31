@@ -1,0 +1,34 @@
+library(foreign)
+library(dplyr)
+library(rgdal)
+
+source("dbf_renaming_functions.R")
+
+
+### USEAGE ###
+
+# 1. rename_classes_dbf() cleans and renames classes and optionally adds class numbers and writes it back to disk
+
+# 2. merge_shapefiles() joins cleaned shapefiles together into one output
+#    - You can pass in direct paths, or you could also pass in calls to rename_classes_dbf() with write_dbf = FALSE,
+#      that way the original shapefiles would remain untouched
+
+
+
+# merge Carins-Cook and Cap-Bunker shapefiles -----------------------------
+
+rename_classes_dbf(path = "B:/0_scratchProcessing/gbr_mapping/gbr_training/20181023_GBR_CBG_geomorphic_ML.dbf",
+                   add_class_numbers = T, write_dbf = T, classes_to_ignore = "exposed Reef Flat")
+rename_classes_dbf(path = "B:/0_scratchProcessing/gbr_mapping/gbr_training/20171023_GBR_CCMR_geomorphic.dbf",
+                   add_class_numbers = T, write_dbf = T)
+
+merge_shapefiles(shp_paths = list("B:/0_scratchProcessing/gbr_mapping/gbr_training/20181023_GBR_CBG_geomorphic_ML.shp",
+                                  "B:/0_scratchProcessing/gbr_mapping/gbr_training/20171023_GBR_CCMR_geomorphic.shp"),
+                 new_shp_path = "B:/0_scratchProcessing/gbr_mapping/gbr_training/gbr_cc_cbg_geomorphic.shp")
+
+
+
+# some other areas... -----------------------------------------------------
+
+
+
