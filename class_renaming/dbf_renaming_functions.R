@@ -1,18 +1,6 @@
 # ## functions to simplify the geomorphic/benthic class labels - classes don't have to exist, it's a logical grep
 # ## ## can keep adding to these over time
-# simplify_benthic <- function(benthic_segments) {
-#   benthic_segments$Class_simp <- benthic_segments$Class_name
-#   benthic_segments$Class_simp[grepl("Sand", benthic_segments$Class_simp)] <- "Sand"
-#   benthic_segments$Class_simp[grepl("BMA", benthic_segments$Class_simp)] <- "BMA"
-#   benthic_segments$Class_simp[grepl("Rock", benthic_segments$Class_simp)] <- "Rock"
-#   benthic_segments$Class_simp[grepl("Coral", benthic_segments$Class_simp)] <- "Coral"
-#   benthic_segments$Class_simp[grepl("Seagrass", benthic_segments$Class_simp)] <- "Seagrass"
-#   benthic_segments$Class_simp[grepl("Rubble", benthic_segments$Class_simp)] <- "Rubble"
-#   benthic_segments$Class_simp[grepl("Plateau", benthic_segments$Class_simp)] <- "Plateau"
-#   benthic_segments$Class_simp[grepl("Deep Slope", benthic_segments$Class_simp)] <- "Deep Slope"
-#   benthic_segments
-# }
-## as above
+
 rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x$glob_class <- x[,class_column]
   # if there's classes to ignore
@@ -52,10 +40,38 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x
 }
 
+rename_benthic <- function(x, class_column, classes_to_ignore,
+                           benthic_classes = c("Rubble","Sand","Rock","Cor_Alg","Seagrass","Mangrove","Mud")) {
+  x$glob_class <- x[,class_column]
+  # if there's classes to ignore
+  if (!is.null(classes_to_ignore)) {
+    if (sum(classes_to_ignore %in% unique(x$glob_class)) == 0) stop("The classes you're trying to ignore are not in here")
+    ignore_idx <- x$glob_class %in% classes_to_ignore
+    x$glob_class[ignore_idx] <- "Ignore"
+  }
+  # generic
+  x$glob_class[grepl("Rubble",x$glob_class)] <- "Rubble"
+  x$glob_class[grepl("Sand",x$glob_class)] <- "Sand"
+  x$glob_class[grepl("Rock",x$glob_class)] <- "Rock"
+  x$glob_class[grepl("Coral/Algae",x$glob_class)] <- "Cor_Alg"
+  x$glob_class[grepl("Coral",x$glob_class)] <- "Coral" # allows 'pure' coral class
+  x$glob_class[grepl("Seagrass",x$glob_class)] <- "Seagrass"
+  x$glob_class[grepl("Mangrove",x$glob_class)] <- "Mangrove"
+  x$glob_class[grepl("Mud",x$glob_class)] <- "Mud"
+  # cairns cook
+  #??
+  # cap bunk
+  #??
+  # remove geomorphic classes is present
+  x$glob_class[!x$glob_class %in% benthic_classes] <- "Ignore"
+  # return it
+  x
+}
+
 number_geomorphic <- function(x) {
   x$class_num <- NA
   # generic
-  ###--> should thi bee a tiered system? (i.e. 1-10 for deep/land etc., 11-20 for reef top, 21-30 for the rest)
+  ###--> should thi bee a tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11-20 for reef top, 21-30 for the rest)
   x$class_num[grepl("Ignore",x$glob_class)] <- 0
   x$class_num[grepl("Land",x$glob_class)] <- 1
   x$class_num[grepl("Deep",x$glob_class)] <- 2
@@ -70,6 +86,27 @@ number_geomorphic <- function(x) {
   x$class_num[grepl("Open Comlex Lagoon",x$glob_class)] <- 24
   x$class_num[grepl("Patch Reef",x$glob_class)] <- 25
   x$class_num[grepl("Small Reef",x$glob_class)] <- 26
+  
+  x$class_num <- as.integer(x$class_num)
+  # return it
+  x
+}
+
+number_benthic <- function(x) {
+  x$class_num <- NA
+  # generic
+  ###--> should thi bee a tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11+ ofr benthic classes
+  x$class_num[grepl("Ignore",x$glob_class)] <- 0
+  x$class_num[grepl("Land",x$glob_class)] <- 1
+  x$class_num[grepl("Deep",x$glob_class)] <- 2
+  x$class_num[grepl("Mangrove",x$glob_class)] <- 3
+  x$class_num[grepl("Mud",x$glob_class)] <- 4
+  x$class_num[grepl("Sand",x$glob_class)] <- 11
+  x$class_num[grepl("Rubble",x$glob_class)] <- 12
+  x$class_num[grepl("Rock",x$glob_class)] <- 13
+  x$class_num[grepl("Seagrass",x$glob_class)] <- 14
+  x$class_num[grepl("Cor_Alg",x$glob_class)] <- 15
+  x$class_num[grepl("Coral",x$glob_class)] <- 16
   
   x$class_num <- as.integer(x$class_num)
   # return it
