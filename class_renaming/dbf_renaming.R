@@ -28,11 +28,17 @@ merge_shapefiles(shp_paths = list("B:/0_scratchProcessing/gbr_mapping/gbr_traini
                  new_shp_path = "B:/0_scratchProcessing/gbr_mapping/gbr_training/gbr_cc_cbg_geomorphic.shp")
 
 ## BENTHIC
+
+
+
+# Carins Cook -----------------------------------------------------
+
+## GEOMORPHIC
+rename_classes_dbf(path = "../../GBR/gee_training/cairns_cook_geomorphic/20171023_GBR_CCMR_geomorphic.dbf",
+                   class_column = "class_na_1",
+                   add_class_numbers = T, geo_or_benthic = "geo", write_dbf = T)
+
+## BENTHIC
 rename_classes_dbf(path = "../../GBR/gee_training/cairns_cook_benthic/20171023_GBR_CCMR_Benthic.dbf",
                    add_class_numbers = T, geo_or_benthic = "benthic", write_dbf = T)
-
-
-# some other areas... -----------------------------------------------------
-
-
 

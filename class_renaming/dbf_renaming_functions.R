@@ -16,6 +16,7 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x$glob_class[grepl("Inner",x$glob_class)] <- "Inner Reef Flat"
   x$glob_class[grepl("Patch",x$glob_class)] <- "Patch Reef"
   x$glob_class[grepl("Rim",x$glob_class)] <- "Reef Rim"
+  x$glob_class[grepl("Terrestrial",x$glob_class)] <- "Reef Flat Terrestrial"
   x$glob_class[grepl("Open Comlex Lagoon",x$glob_class)] <- "Open Comlex Lagoon"
   x$glob_class[grepl("Shallow Lagoon",x$glob_class)] <- "Shallow Lagoon"
   x$glob_class[grepl("Deep Lagoon", x$glob_class)] <- "Deep Lagoon"
@@ -80,6 +81,7 @@ number_geomorphic <- function(x) {
   x$class_num[grepl("Inner Reef Flat",x$glob_class)] <- 13
   x$class_num[grepl("Outer Reef Flat",x$glob_class)] <- 14
   x$class_num[grepl("Reef Rim",x$glob_class)] <- 15
+  x$class_num[grepl("Reef Flat Terrestrial",x$glob_class)] <- 16
   x$class_num[grepl("Slope Sheltered",x$glob_class)] <- 21
   x$class_num[grepl("Slope Exposed",x$glob_class)] <- 22
   x$class_num[grepl("Plateau",x$glob_class)] <- 23
