@@ -10,6 +10,8 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
     x$glob_class[ignore_idx] <- "Ignore"
   }
   # generic
+  x$glob_class[grepl("Cloud",x$glob_class)] <- "Ignore"
+  x$glob_class[grepl("Waves",x$glob_class)] <- "Ignore"
   x$glob_class[grepl("Land",x$glob_class)] <- "Land"
   x$glob_class[grepl("Island",x$glob_class)] <- "Land"
   x$glob_class[grepl("Outer",x$glob_class)] <- "Outer Reef Flat"
@@ -24,6 +26,8 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x$glob_class[grepl("Reef Crest",x$glob_class)] <- "Reef Rim"
   x$glob_class[grepl("Deep Water",x$glob_class)] <- "Deep"
   x$glob_class[grepl("Plateau ",x$glob_class)] <- "Plateau"
+  x$glob_class[grepl("Sheltered",x$glob_class)] <- "Slope Sheltered"
+  x$glob_class[grepl("Exposed",x$glob_class)] <- "Slope Exposed"
   # cairns cook
   x$glob_class[grepl("Deep Slope 10 m + Leeward",x$glob_class, fixed = T)] <- "Slope Sheltered"
   x$glob_class[grepl("Deep Slope 10 m + Windward",x$glob_class, fixed = T)] <- "Slope Exposed"
@@ -37,12 +41,16 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x$glob_class[grepl("Deep Water < 20 m",x$glob_class)] <- "Deep"
   x$glob_class[grepl("Fore Reef slope 20-90d",x$glob_class)] <- "Slope Exposed"
   x$glob_class[grepl("Reef slope 20-90d Deep",x$glob_class)] <- "Slope Sheltered"
+  # fiji
+  x$glob_class[grepl("Lagoon", x$glob_class)] <- "Shallow Lagoon"
+  x$glob_class[grepl("Sheletered",x$glob_class)] <- "Slope Sheltered"
+  
   # return it
   x
 }
 
 rename_benthic <- function(x, class_column, classes_to_ignore,
-                           benthic_classes = c("Rubble","Sand","Rock","Cor_Alg","Seagrass","Mangrove","Mud")) {
+                           benthic_classes = c("Rubble","Sand","Rock","Coral", "Algae", "Cor_Alg","Seagrass","Mangrove","Mud")) {
   x$glob_class <- x[,class_column]
   # if there's classes to ignore
   if (!is.null(classes_to_ignore)) {
@@ -56,6 +64,7 @@ rename_benthic <- function(x, class_column, classes_to_ignore,
   x$glob_class[grepl("Rock",x$glob_class)] <- "Rock"
   x$glob_class[grepl("Coral/Algae",x$glob_class)] <- "Cor_Alg"
   x$glob_class[grepl("Coral",x$glob_class)] <- "Coral" # allows 'pure' coral class
+  x$glob_class[grepl("Algae",x$glob_class)] <- "Algae" # allows 'pure' algae class
   x$glob_class[grepl("Seagrass",x$glob_class)] <- "Seagrass"
   x$glob_class[grepl("Mangrove",x$glob_class)] <- "Mangrove"
   x$glob_class[grepl("Mud",x$glob_class)] <- "Mud"
@@ -63,7 +72,7 @@ rename_benthic <- function(x, class_column, classes_to_ignore,
   #??
   # cap bunk
   #??
-  # remove geomorphic classes is present
+  # remove geomorphic classes if present
   x$glob_class[!x$glob_class %in% benthic_classes] <- "Ignore"
   # return it
   x
@@ -72,7 +81,7 @@ rename_benthic <- function(x, class_column, classes_to_ignore,
 number_geomorphic <- function(x) {
   x$class_num <- NA
   # generic
-  ###--> should thi bee a tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11-20 for reef top, 21-30 for the rest)
+  ###--> tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11-20 for reef top, 21-30 for the rest)
   x$class_num[grepl("Ignore",x$glob_class)] <- 0
   x$class_num[grepl("Land",x$glob_class)] <- 1
   x$class_num[grepl("Deep",x$glob_class)] <- 2
@@ -97,7 +106,7 @@ number_geomorphic <- function(x) {
 number_benthic <- function(x) {
   x$class_num <- NA
   # generic
-  ###--> should thi bee a tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11+ ofr benthic classes
+  ###--> tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11+ ofr benthic classes
   x$class_num[grepl("Ignore",x$glob_class)] <- 0
   x$class_num[grepl("Land",x$glob_class)] <- 1
   x$class_num[grepl("Deep",x$glob_class)] <- 2
@@ -109,6 +118,7 @@ number_benthic <- function(x) {
   x$class_num[grepl("Seagrass",x$glob_class)] <- 14
   x$class_num[grepl("Cor_Alg",x$glob_class)] <- 15
   x$class_num[grepl("Coral",x$glob_class)] <- 16
+  x$class_num[grepl("Algae",x$glob_class)] <- 17
   
   x$class_num <- as.integer(x$class_num)
   # return it
