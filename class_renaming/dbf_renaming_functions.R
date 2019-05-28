@@ -14,11 +14,11 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x$glob_class[grepl("Waves",x$glob_class)] <- "Ignore"
   x$glob_class[grepl("Land",x$glob_class)] <- "Land"
   x$glob_class[grepl("Island",x$glob_class)] <- "Land"
+  x$glob_class[grepl("Terrestrial",x$glob_class)] <- "Reef Flat Terrestrial"
   x$glob_class[grepl("Outer",x$glob_class)] <- "Outer Reef Flat"
   x$glob_class[grepl("Inner",x$glob_class)] <- "Inner Reef Flat"
   x$glob_class[grepl("Patch",x$glob_class)] <- "Patch Reef"
   x$glob_class[grepl("Rim",x$glob_class)] <- "Reef Rim"
-  x$glob_class[grepl("Terrestrial",x$glob_class)] <- "Reef Flat Terrestrial"
   x$glob_class[grepl("Open Comlex Lagoon",x$glob_class)] <- "Open Comlex Lagoon"
   x$glob_class[grepl("Shallow Lagoon",x$glob_class)] <- "Shallow Lagoon"
   x$glob_class[grepl("Deep Lagoon", x$glob_class)] <- "Deep Lagoon"
@@ -42,7 +42,7 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x$glob_class[grepl("Fore Reef slope 20-90d",x$glob_class)] <- "Slope Exposed"
   x$glob_class[grepl("Reef slope 20-90d Deep",x$glob_class)] <- "Slope Sheltered"
   # fiji
-  x$glob_class[grepl("Lagoon", x$glob_class)] <- "Shallow Lagoon"
+  x$glob_class[grepl("^Lagoon", x$glob_class)] <- "Shallow Lagoon" # ^ = start of string
   x$glob_class[grepl("Sheletered",x$glob_class)] <- "Slope Sheltered"
   
   # return it
@@ -50,7 +50,7 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
 }
 
 rename_benthic <- function(x, class_column, classes_to_ignore,
-                           benthic_classes = c("Rubble","Sand","Rock","Coral", "Algae", "Cor_Alg","Seagrass","Mangrove","Mud")) {
+                           benthic_classes = c("Rubble","Sand","Rock","Coral", "Algae", "Cor_Alg","Seagrass","Mangrove","Mud","Temporal")) {
   x$glob_class <- x[,class_column]
   # if there's classes to ignore
   if (!is.null(classes_to_ignore)) {
@@ -68,6 +68,10 @@ rename_benthic <- function(x, class_column, classes_to_ignore,
   x$glob_class[grepl("Seagrass",x$glob_class)] <- "Seagrass"
   x$glob_class[grepl("Mangrove",x$glob_class)] <- "Mangrove"
   x$glob_class[grepl("Mud",x$glob_class)] <- "Mud"
+  #temorally dynamic classes (don't want these to be in the "ignore" category that gets sampled for mapping)
+  x$glob_class[grepl("Waves",x$glob_class)] <- "Temporal"
+  x$glob_class[grepl("Turbid",x$glob_class)] <- "Temporal"
+  x$glob_class[grepl("Cloud",x$glob_class)] <- "Temporal"
   # cairns cook
   #??
   # cap bunk
@@ -109,7 +113,7 @@ number_benthic <- function(x) {
   ###--> tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11+ ofr benthic classes
   x$class_num[grepl("Ignore",x$glob_class)] <- 0
   x$class_num[grepl("Land",x$glob_class)] <- 1
-  x$class_num[grepl("Deep",x$glob_class)] <- 2
+  x$class_num[grepl("Temporal",x$glob_class)] <- 2 ## "temporal classes are those that change iwth image capture time (turbid, waves etc.)
   x$class_num[grepl("Mangrove",x$glob_class)] <- 3
   x$class_num[grepl("Mud",x$glob_class)] <- 4
   x$class_num[grepl("Sand",x$glob_class)] <- 11

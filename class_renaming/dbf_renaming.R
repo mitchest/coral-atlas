@@ -47,11 +47,11 @@ source("dbf_renaming_functions.R")
 # Fiji --------------------------------------------------------------------
 
 ## GEOMORPHIC
-rename_classes_dbf(path = "../../fiji/fiji_fina_kadavu_kubalau_geo.dbf",
+rename_classes_dbf(path = "../../fiji/fiji_fina_kadavu_kubalau_geo_diss.dbf",
                    class_column = "GC_geo",
                    add_class_numbers = T, geo_or_benthic = "geo", write_dbf = T)
 
 ## BENTHIC
-rename_classes_dbf(path = "../../fiji/fiji_fina_kadavu_kubalau_benthic.dbf",
+rename_classes_dbf(path = "../../fiji/fiji_fina_kadavu_kubalau_benthic_diss.dbf",
                    class_column = "GC_benthic",
                    add_class_numbers = T, geo_or_benthic = "benthic", write_dbf = T)
