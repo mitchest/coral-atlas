@@ -14,6 +14,7 @@ rename_geomorphic <- function(x, class_column, classes_to_ignore) {
   x$glob_class[grepl("Waves",x$glob_class)] <- "Ignore"
   x$glob_class[grepl("Land",x$glob_class)] <- "Land"
   x$glob_class[grepl("Island",x$glob_class)] <- "Land"
+  x$glob_class[grepl("Turbid",x$glob_class)] <- "Turbid"
   x$glob_class[grepl("Terrestrial",x$glob_class)] <- "Reef Flat Terrestrial"
   x$glob_class[grepl("Outer",x$glob_class)] <- "Outer Reef Flat"
   x$glob_class[grepl("Inner",x$glob_class)] <- "Inner Reef Flat"
@@ -70,7 +71,7 @@ rename_benthic <- function(x, class_column, classes_to_ignore,
   x$glob_class[grepl("Mud",x$glob_class)] <- "Mud"
   #temorally dynamic classes (don't want these to be in the "ignore" category that gets sampled for mapping)
   x$glob_class[grepl("Waves",x$glob_class)] <- "Temporal"
-  x$glob_class[grepl("Turbid",x$glob_class)] <- "Temporal"
+  x$glob_class[grepl("Turbid",x$glob_class)] <- "Turbid"
   x$glob_class[grepl("Cloud",x$glob_class)] <- "Temporal"
   # cairns cook
   #??
@@ -82,13 +83,18 @@ rename_benthic <- function(x, class_column, classes_to_ignore,
   x
 }
 
-number_geomorphic <- function(x) {
+number_geomorphic <- function(x, use_turbid = T) { #use turbid when turbis polygons updated to capture date
   x$class_num <- NA
   # generic
   ###--> tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11-20 for reef top, 21-30 for the rest)
   x$class_num[grepl("Ignore",x$glob_class)] <- 0
   x$class_num[grepl("Land",x$glob_class)] <- 1
   x$class_num[grepl("Deep",x$glob_class)] <- 2
+  if (use_turbid) {
+    x$class_num[grepl("Turbid",x$glob_class)] <- 3
+  } else {
+    x$class_num[grepl("Turbid",x$glob_class)] <- 0
+  }
   x$class_num[grepl("Shallow Lagoon",x$glob_class)] <- 11
   x$class_num[grepl("Deep Lagoon",x$glob_class)] <- 12
   x$class_num[grepl("Inner Reef Flat",x$glob_class)] <- 13
@@ -107,13 +113,18 @@ number_geomorphic <- function(x) {
   x
 }
 
-number_benthic <- function(x) {
+number_benthic <- function(x, use_turbid = T) { #use turbid when turbis polygons updated to capture date
   x$class_num <- NA
   # generic
   ###--> tiered system? (i.e. 1-10 for non-reef stuff (deep/land etc.), 11+ ofr benthic classes
   x$class_num[grepl("Ignore",x$glob_class)] <- 0
   x$class_num[grepl("Land",x$glob_class)] <- 1
-  x$class_num[grepl("Temporal",x$glob_class)] <- 2 ## "temporal classes are those that change iwth image capture time (turbid, waves etc.)
+  x$class_num[grepl("Temporal",x$glob_class)] <- 2 ## "temporal classes that have not been updated to mapping date/capture time (turbid, waves etc.)
+  if (use_turbid) {
+    x$class_num[grepl("Turbid",x$glob_class)] <- 0
+  } else {
+    x$class_num[grepl("Turbid",x$glob_class)] <- 2
+  }
   x$class_num[grepl("Mangrove",x$glob_class)] <- 3
   x$class_num[grepl("Mud",x$glob_class)] <- 4
   x$class_num[grepl("Sand",x$glob_class)] <- 11
